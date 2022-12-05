@@ -8,14 +8,14 @@
 #  * config - external file, json
 #  * profanity - profanity filter
 
-from h_pct import pct
+from utility.hctp import pct
 import random
 import curses
 import time
 from timeit import default_timer as timer
-from textColor import textColors
+from utility.textColor import textColors
 from playsound import playsound
-import config
+import utility.config as config
 from better_profanity import profanity
 
 # data: dict, where all essential data to run the game is stored. Could potentially be separated into a .json file.
@@ -23,6 +23,7 @@ from better_profanity import profanity
 hs = config.CONFIG['leaderboard']
 score = 0
 timeElapsed = 0
+q = 100
 
 data = {
     # Correct sound effect random options 
@@ -114,7 +115,7 @@ def walkthrough():
                 time.sleep(2)
             try:
                 print("\n\n")
-                print(pct(f"UCC_Y9_1/Jabari Jumps/hct_images/{lines+1}.html"))
+                print(pct(f"hctp_images/walkthrough/{lines+1}.html"))
                 for _ in range(2):
                     time.sleep(0.5)
                     print("\n")
@@ -124,7 +125,7 @@ def walkthrough():
 
     print(f"{textColors.White}\n\n\n\n\nHere is a brief walkthrough of Jabari Jumps! (Tip: Pay attention to the {textColors.LightBlue}{textColors.Bold}BLUE{textColors.ResetAll}{textColors.White} text!)")
     time.sleep(2)
-    print(pct("UCC_Y9_1/Jabari Jumps/hct_images/cover.html"))
+    print(pct("hctp_images/walkthrough/cover.html"))
     for _ in range(10):
         time.sleep(0.1)
         print("\n")
@@ -140,7 +141,7 @@ def walkthrough():
                                                                          """)
     time.sleep(5)
     print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
-    print(pct("UCC_Y9_1/Jabari Jumps/hct_images/image_question_1.html"))
+    print(pct("hctp_images/q1.html"))
     time.sleep(5)
     questions()
     
@@ -148,6 +149,7 @@ def walkthrough():
 
 def questions():
     start = timer()
+    global q
     global score
     global timeElapsed
     firstTry = True
@@ -191,7 +193,7 @@ def questions():
             title_win.addstr(0,0, try_again, curses.color_pair(3))
             title_win.refresh()
             if q != 100:
-                playsound(f'/Users/nchen26/Code/UCC_Y9_1/Jabari Jumps/mp3/Wrong Sounds/{random.choice(data["ws"])}.mp3')
+                playsound(f'mp3/Wrong Sounds/{random.choice(data["ws"])}.mp3')
             
 
         def correctFlash():
@@ -202,7 +204,7 @@ def questions():
    ██║   ██║  ██║██║  ██║   ██║   ███████║    ██║  ██║██║╚██████╔╝██║  ██║   ██║   ██╗
    ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝    ╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝""", curses.color_pair(2))
             title_win.refresh()
-            playsound(f'/Users/nchen26/Code/UCC_Y9_1/Jabari Jumps/mp3/Correct Sounds/{random.choice(data["cs"])}.mp3')
+            playsound(f'mp3/Correct Sounds/{random.choice(data["cs"])}.mp3')
 
         stdscr.border()
         input_win.border()
@@ -274,7 +276,7 @@ def questions():
         stdscr.refresh()
         title_win.addstr(0,0, "Your results:", curses.A_BOLD)
         title_win.refresh()
-        playsound("/Users/nchen26/Code/UCC_Y9_1/Jabari Jumps/mp3/Other/drumroll.mp3") 
+        playsound("mp3/Other/drumroll.mp3") 
         maxscore = 0
         for i in data["type"]:
             maxscore += float(i[1])
@@ -294,7 +296,7 @@ def questions():
         title_win.addstr(2,0, f"{score} / {maxscore} ({round((score/maxscore) * 100, 2)}%!) in {timeElapsed} seconds! 👑\n\n")
         title_win.refresh()
         q = 100
-        playsound("/Users/nchen26/Code/UCC_Y9_1/Jabari Jumps/mp3/Other/clap.mp3")
+        playsound("mp3/Other/clap.mp3")
         curses.endwin()
 
 def highscoreSystem():
@@ -326,5 +328,5 @@ def highscoreSystem():
 welcome()
 highscoreSystem()
 
-print(pct('UCC_Y9_1/Jabari Jumps/hct_images/thx4playing.html'))
+print(pct('hctp_images/thanks.html'))
 print(data["result"])

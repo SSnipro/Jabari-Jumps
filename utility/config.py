@@ -12,7 +12,7 @@ def save_config():
 
 RUN_PATH = os.getcwd()
 
-config_file = 'UCC_Y9_1/Jabari Jumps/hs.json'
+config_file = 'hs.json'
 CONFIG = load_config()
 if not "leaderboard" in CONFIG:
     CONFIG["leaderboard"] = []
