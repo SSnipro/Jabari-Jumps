@@ -59,6 +59,9 @@ data = {
         "Who encourages Jabari?",
         "What is the advice Jabari's dad give Jabari?",
         "In this book, what qualities does Jabari show?",
+        "How does Jabari's perspective of jumping off the diving board change?",
+        "Find at least 2 signs of Jabari being nervous.",
+        """Here are the 17 UN goals. Which of the 17 UN goals connect most to this book?"""
         ],
     # Type data stored in format: [Question type (optional image), question value]
     "type": [
@@ -71,6 +74,9 @@ data = {
         ["Multiple Choice",100],
         ["Multiple Choice,",200],
         ["Short Answer",400],
+        ["Short Answer",400],
+        ["Short Answer",200],
+        ["UN", 1000]
         ],
     # If question type multiple choice, stored format [a,b,c]
     "answers": [
@@ -83,9 +89,12 @@ data = {
         ["His mother", "His dad", "His sister"],
         ['''"Sometimes, if I feel a little scared, I take a deep breath and tell myself I am ready. And you know what? Sometimes it stops feeling scary and feels a little like a surprise."''','''"Stretching is very important,"''','''"Are you okay?"'''],
         [],
+        [],
+        [],
+        [],
         ],
     # Correct answer list
-    "answer": ["b","c","c",["test", "swimming lesson"],"a","a","b","a",["bravery","courage","risk","confiden"]],
+    "answer": ["b","c","c",["test", "swimming lesson"],"a","a","b","a",["bravery","courage","risk","confiden"],["nervous","confiden","encourage","dad"],["front"],["6","9"]],
     # Stored user input result 
     "result": []
 }
@@ -138,7 +147,7 @@ def walkthrough():
 ██║▄▄ ██║██║   ██║██╔══╝  ╚════██║   ██║   ██║██║   ██║██║╚██╗██║╚════██║
 ╚██████╔╝╚██████╔╝███████╗███████║   ██║   ██║╚██████╔╝██║ ╚████║███████║
  ╚══▀▀═╝  ╚═════╝ ╚══════╝╚══════╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
-                                                                         """)
+                       """)
     time.sleep(5)
     print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
     print(pct("hctp_images/q1.html"))
@@ -161,11 +170,11 @@ def questions():
     curses.init_pair(3, curses.COLOR_RED, curses.COLOR_BLACK)
     curses.init_pair(4, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
     stdscr.bkgd(' ', curses.color_pair(1))
-    q = 0 
-    title_win = curses.newwin(12, 180, 2, 5)
+    q = 0
+    title_win = curses.newwin(25 if "UN" in data['type'][q][0] else 12, 260, 2, 5)
     while q < len(data["questions"]):
         output_win = curses.newwin(3, 20, 10, 5)
-        input_win = curses.newwin(3 if "Multiple Choice" in data['type'][q][0] else 5, 18 if "Multiple Choice" in data['type'][q][0] else 60, 10, 3)
+        input_win = curses.newwin(3 if "Multiple Choice" in data['type'][q][0] or "UN" in data['type'][q][0] else 5, 18 if "Multiple Choice" in data['type'][q][0] or "UN" in data['type'][q][0] else 60, 20 if "UN" in data['type'][q][0] else 10, 3)
         def incorrectFlash():
             global firstTry
             firstTry = False
@@ -217,6 +226,11 @@ def questions():
             title_win.addstr(3, 0, f"A. {data['answers'][q][0]}\nB. {data['answers'][q][1]}\nC. {data['answers'][q][2]}")
         elif "Short Answer" in data['type'][q][0]:
             title_win.addstr(3, 0, f"\nPress any key to start answering", curses.A_BOLD)
+        elif "UN" in data['type'][q][0]:    
+            title_win.addstr(3, 0, f"GOAL 1: No Poverty\nGOAL 3: Good Health and Well-being\nGOAL 5: Gender Equality\nGOAL 7: Affordable and Clean Energy\nGOAL 9: Industry, Innovation and Infrastructure\nGOAL 11: Sustainable Cities and Communities\nGOAL 13: Climate Action\nGOAL 15: Life on Land\nGOAL 17: Partnerships to achieve the Goal")
+            array = ["GOAL 2: Zero Hunger","GOAL 4: Quality Education","GOAL 6: Clean Water and Sanitation","GOAL 8: Decent Work and Economic Growth","GOAL 10: Reduced Inequality","GOAL 12: Responsible Consumption and Production","GOAL 14: Life Below Water","GOAL 16: Peace and Justice Strong Institutions"]
+            for i in range(8):
+                title_win.addstr(i+3, 50, array[i])
         stdscr.refresh()
         title_win.refresh()
 
@@ -269,6 +283,27 @@ def questions():
                 incorrectFlash()
                 wrongCounter += 1
                 time.sleep(1)
+        elif "UN" in data['type'][q][0]:
+            c = stdscr.getch()
+            input_win.addstr(1, 1, "Your answer: ", curses.A_BOLD)
+            while c != "ENTER":
+                answer = input_win.getstr(1, 14, 175)
+                break
+            stdscr.clear()
+            stdscr.refresh()
+            if str(answer.lower().decode("utf-8")) in ["6","9"]:
+                correctFlash()
+                if firstTry == True and wrongCounter == 0:
+                    data["result"].append(f"1!")
+                else: 
+                    data["result"].append(f"{wrongCounter}")
+                firstTry = True
+                wrongCounter = 0
+                q += 1
+            else:
+                incorrectFlash()
+                wrongCounter += 1
+                time.sleep(1)
     if q == len(data["questions"]):
         end = timer()
         timeElapsed = round(end-start,2)
@@ -287,7 +322,7 @@ def questions():
                 else:
                     score += data["type"][i][1]
             else: 
-                if "," in i:
+                if "," in data["result"][i]:
                     score += round(float(data["type"][i][1]/(float(int(data["type"][i].split(",")[0])+1))) * int(data["type"][i].split(",")[1]), 2)
                 else:
                     score += round(float(data["type"][i][1]/float((int(data["type"][i].split(",")[0])+1))), 2)
@@ -329,4 +364,3 @@ welcome()
 highscoreSystem()
 
 print(pct('hctp_images/thanks.html'))
-print(data["result"])
