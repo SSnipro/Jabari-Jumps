@@ -149,15 +149,15 @@ def walkthrough():
  ╚══▀▀═╝  ╚═════╝ ╚══════╝╚══════╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
                        """)
     time.sleep(5)
-    print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
-    print(pct("hctp_images/q1.html"))
-    time.sleep(5)
     questions()
     
 
 
 def questions():
     start = timer()
+    print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+    print(pct("hctp_images/q1.html"))
+    time.sleep(5)
     global q
     global score
     global timeElapsed
@@ -323,9 +323,9 @@ def questions():
                     score += data["type"][i][1]
             else: 
                 if "," in data["result"][i]:
-                    score += round(float(data["type"][i][1]/(float(int(data["type"][i].split(",")[0])+1))) * int(data["type"][i].split(",")[1]), 2)
+                    score += round(float(data["type"][i][1]/(float(int(data["result"][i].split(",")[0])+1))) * int(data["result"][i].split(",")[0]), 2)
                 else:
-                    score += round(float(data["type"][i][1]/float((int(data["type"][i].split(",")[0])+1))), 2)
+                    score += round(float(data["type"][i][1]/float((int(data["result"][i])))), 2)
 
         score = round(score,2)
         title_win.addstr(2,0, f"{score} / {maxscore} ({round((score/maxscore) * 100, 2)}%!) in {timeElapsed} seconds! 👑\n\n")
