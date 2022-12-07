@@ -9,3 +9,9 @@ Major thanks to them for making this possible.
 --------------
 
 This repository is dedicated to create a text-based game to help the UCC students at the Prep better understand the book Jabari Jumps as long as connecting the book to the 17 UN goals.
+
+--------------
+
+### How to run the game
+
+#### 1. Install packages using pip
