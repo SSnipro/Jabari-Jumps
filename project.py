@@ -7,6 +7,7 @@
 #  * playsound - allows mp3 files to be played
 #  * config - external file, json
 #  * profanity - profanity filter
+#  * sys - system, used for typewriter effect
 
 from utility.hctp import pct
 import random
@@ -17,20 +18,36 @@ from utility.textColor import textColors
 from playsound import playsound
 import utility.config as config
 from better_profanity import profanity
+import sys
 
-# data: dict, where all essential data to run the game is stored. Could potentially be separated into a .json file.
+# var hs: json file where all the leaderboard user data is stored.
+# var score: score of the user (refreshes after each attempt)
+# var timeElapsed: time elapsed since start of the questions section
+# var q: current question, if q = 100 -> question part = false
 
 hs = config.CONFIG['leaderboard']
 score = 0
 timeElapsed = 0
 q = 100
 
+# func type: used for typewriter effect
+def type(string):
+    for char in string:
+        time.sleep(0.02)
+        sys.stdout.write(char)
+        sys.stdout.flush()
+
+# func clear_page: used to clear terminal page
+def clear_page():
+    print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+
+# dict data: where all essential data to run the game is stored. Could potentially be separated into a .json file.
 data = {
-    # Correct sound effect random options 
-    "cs": ["ding","nice","angrybirds"],
-    # Wrong sound effect random options 
-    "ws": ["boing","cry","grrrrr","heheheha"],
-    # Dialogue line data, each object in list is by line
+    # array cs: Correct sound effect random options 
+    "cs": ["ding","nice"],
+    # array ws: Wrong sound effect random options 
+    "ws": ["cry","grrrrr","heheheha"],
+    # array dialogue: Dialogue line data, each object in list is by line
     "dialogue": [
         [f'''"{textColors.LightBlue}{textColors.Bold}I'm jumping off the diving board today{textColors.ResetAll}{textColors.White}," Jabari told his dad.''', '''"Really?" said his dad.'''],
         [f'''The diving board is a bit scary, but Jabari had finished his {textColors.LightBlue}{textColors.Bold}swimming lessons and passed his swim test{textColors.ResetAll}{textColors.White}, and now he was ready to jump.''','''"I'm a great jumper," said Jabari, "so I'm not scared at all."'''],
@@ -48,7 +65,7 @@ data = {
         ['''"Jabari! You did it!" said his dad.''','''"I did it!" said Jabari. "I'm a great jumper! And you know what?"''', '''"What?" said his dad.'''],
         ['''"Surprise double backflip is next!"''']
     ],
-    # Question part data
+    # array questions: Question part data
     "questions": [
         "Looking at the cover, who is the author of the book?", 
         "What is the setting of the story?", 
@@ -63,7 +80,7 @@ data = {
         "Find at least 2 signs of Jabari being nervous.",
         """Here are the 17 UN goals. Which of the 17 UN goals connect most to this book?"""
         ],
-    # Type data stored in format: [Question type (optional image), question value]
+    # array type: Type data stored in format: [Question type (optional image), question value]
     "type": [
         ["Multiple Choice image_question_1.html",100], 
         ["Multiple Choice",100], 
@@ -73,12 +90,12 @@ data = {
         ["Multiple Choice",100],
         ["Multiple Choice",100],
         ["Multiple Choice,",200],
-        ["Short Answer",400],
-        ["Short Answer",400],
+        ["Short Answer",200],
+        ["Short Answer",300],
         ["Short Answer",200],
         ["UN", 1000]
         ],
-    # If question type multiple choice, stored format [a,b,c]
+    # array answers: If question type multiple choice, stored format [a,b,c], if empty -> not multiple choice
     "answers": [
         ["Jabari","Gaia Cornwell","David Shannon"],
         ["A park", "Jabari's home", "A swimming pool"],
@@ -93,14 +110,15 @@ data = {
         [],
         [],
         ],
-    # Correct answer list
-    "answer": ["b","c","c",["test", "swimming lesson"],"a","a","b","a",["bravery","courage","risk","confiden"],["nervous","confiden","encourage","dad"],["front"],["6","9"]],
-    # Stored user input result 
+    # array answer: Correct answer list
+    "answer": ["b","c","c",["test", "swimming lesson"],"a","a","b","a",["bravery", "courage", "risk", "confiden"],["nervous", "scared","confiden","encourage", "dad"],["front","excuse","behind",""],["6","9"]],
+    # array result: Stored user input result 
     "result": []
 }
 
 
 def welcome():
+    # Welcome to the game ASCII art
     print(f"""{textColors.Magenta}\n\n██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗    ████████╗ ██████╗     ████████╗██╗  ██╗███████╗     ██████╗  █████╗ ███╗   ███╗███████╗
 ██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝    ╚══██╔══╝██╔═══██╗    ╚══██╔══╝██║  ██║██╔════╝    ██╔════╝ ██╔══██╗████╗ ████║██╔════╝
 ██║ █╗ ██║█████╗  ██║     ██║     ██║   ██║██╔████╔██║█████╗         ██║   ██║   ██║       ██║   ███████║█████╗      ██║  ███╗███████║██╔████╔██║█████╗  
@@ -108,21 +126,26 @@ def welcome():
 ╚███╔███╔╝███████╗███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗       ██║   ╚██████╔╝       ██║   ██║  ██║███████╗    ╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗
  ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝       ╚═╝    ╚═════╝        ╚═╝   ╚═╝  ╚═╝╚══════╝     ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝
        """)
-    skip = input(f"{textColors.Bold}            Press s to skip walkthrough | Press anything else to start the story walkthrough{textColors.ResetAll}     ")
-    if skip == "s":
+    # Conditional input value skip
+    skip = input(f"{textColors.Bold}            Press S to skip walkthrough | Press anything else to start the story walkthrough{textColors.ResetAll}     ")
+    if skip.lower() == "s":
         questions()
     else:
        walkthrough()
 
 
 def walkthrough():
+    # Dialogue function
     def dialogue():
         for lines in range(len(data["dialogue"])):
-            print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+            clear_page()
             for line in data["dialogue"][lines]:
-                print(line)
+                # Each page
+                type(line)
+                print("\n")
                 time.sleep(2)
             try:
+                # Image corresponding to each page (if there is an image, if error -> pass)
                 print("\n\n")
                 print(pct(f"hctp_images/walkthrough/{lines+1}.html"))
                 for _ in range(2):
@@ -132,15 +155,18 @@ def walkthrough():
             except:
                 pass
 
-    print(f"{textColors.White}\n\n\n\n\nHere is a brief walkthrough of Jabari Jumps! (Tip: Pay attention to the {textColors.LightBlue}{textColors.Bold}BLUE{textColors.ResetAll}{textColors.White} text!)")
-    time.sleep(2)
+    type(f"{textColors.White}\n\n\n\n\nHere is a brief walkthrough of Jabari Jumps! (Tip: Pay attention to the {textColors.LightBlue}{textColors.Bold}BLUE{textColors.ResetAll}{textColors.White} text!)")
+    time.sleep(1)
+    # Cover page
     print(pct("hctp_images/walkthrough/cover.html"))
+    # Used to create a scroll-down effect, reduces cover page ASCII image lag
     for _ in range(10):
         time.sleep(0.1)
         print("\n")
     time.sleep(5)
     dialogue()
-    print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+    clear_page()
+    # After walkthrough ends, question part commences
     print(""" ██████╗ ██╗   ██╗███████╗███████╗████████╗██╗ ██████╗ ███╗   ██╗███████╗
 ██╔═══██╗██║   ██║██╔════╝██╔════╝╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝
 ██║   ██║██║   ██║█████╗  ███████╗   ██║   ██║██║   ██║██╔██╗ ██║███████╗
@@ -154,15 +180,21 @@ def walkthrough():
 
 
 def questions():
+    # Timer starts
     start = timer()
-    print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+    clear_page()
+    # Cover page w/ author name, again
     print(pct("hctp_images/q1.html"))
     time.sleep(5)
+    # global vars, they will be used for tracking in this section
     global q
     global score
     global timeElapsed
+    # var firstTry: The player will get bonus points if they got the correct answer first try. Will refresh every single q.
+    # var wrongCounter: The player will reduce points for each answer they get wrong for every single q. (Formula: question value / wrongCounter + 1)
     firstTry = True
     wrongCounter = 0
+    # Python curses Window created, along with 4 color pairs with background color, since textColor.py cannot be used while using curses.
     stdscr = curses.initscr()
     curses.start_color()
     curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
@@ -170,11 +202,15 @@ def questions():
     curses.init_pair(3, curses.COLOR_RED, curses.COLOR_BLACK)
     curses.init_pair(4, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
     stdscr.bkgd(' ', curses.color_pair(1))
+    # q = 0, questions begin
     q = 0
+    # win title_win: Window that will display the title as well as the answer options (if Multiple Choice), resizes conditionally using ternary operation
     title_win = curses.newwin(25 if "UN" in data['type'][q][0] else 12, 260, 2, 5)
+    # while loop until questions end
     while q < len(data["questions"]):
-        output_win = curses.newwin(3, 20, 10, 5)
+        # win input_win: Window that will display user input (responses), resizes conditionally using ternary operation
         input_win = curses.newwin(3 if "Multiple Choice" in data['type'][q][0] or "UN" in data['type'][q][0] else 5, 18 if "Multiple Choice" in data['type'][q][0] or "UN" in data['type'][q][0] else 60, 20 if "UN" in data['type'][q][0] else 10, 3)
+        # func incorrectFlash(): text-based flash if user gets an incorrect answer 
         def incorrectFlash():
             global firstTry
             firstTry = False
@@ -201,10 +237,11 @@ def questions():
             time.sleep(0.1)
             title_win.addstr(0,0, try_again, curses.color_pair(3))
             title_win.refresh()
+            # This line is added because python curses is very sensitive, even when the windows end it will still count user input, therefore this line prevents this from happening when the game ends.
             if q != 100:
                 playsound(f'mp3/Wrong Sounds/{random.choice(data["ws"])}.mp3')
             
-
+        # func correctFlash(): text-based flash if user gets an correct answer 
         def correctFlash():
             title_win.addstr(0, 0, """████████╗██╗  ██╗ █████╗ ████████╗███████╗    ██████╗ ██╗ ██████╗ ██╗  ██╗████████╗██╗
 ╚══██╔══╝██║  ██║██╔══██╗╚══██╔══╝██╔════╝    ██╔══██╗██║██╔════╝ ██║  ██║╚══██╔══╝██║
@@ -215,12 +252,13 @@ def questions():
             title_win.refresh()
             playsound(f'mp3/Correct Sounds/{random.choice(data["cs"])}.mp3')
 
+        # Re-add the border of the windows
         stdscr.border()
         input_win.border()
-        output_win.border()
 
-        # ternary operator 
+        # var pointGrammar: this variable is not really used anymore, since all my question values are now above 100, but I would still like to keep it since it is not completely a waste.
         pointGrammar = "point" if data['type'][q][1] == 1 else "points"
+        # title_win adds question, question value and description.
         title_win.addstr(1, 0, f"{q+1}. {data['questions'][q]} ({data['type'][q][1]} {pointGrammar})", curses.A_BOLD)
         if "Multiple Choice" in data['type'][q][0]:
             title_win.addstr(3, 0, f"A. {data['answers'][q][0]}\nB. {data['answers'][q][1]}\nC. {data['answers'][q][2]}")
@@ -231,13 +269,16 @@ def questions():
             array = ["GOAL 2: Zero Hunger","GOAL 4: Quality Education","GOAL 6: Clean Water and Sanitation","GOAL 8: Decent Work and Economic Growth","GOAL 10: Reduced Inequality","GOAL 12: Responsible Consumption and Production","GOAL 14: Life Below Water","GOAL 16: Peace and Justice Strong Institutions"]
             for i in range(8):
                 title_win.addstr(i+3, 50, array[i])
+        # refreshing the window
         stdscr.refresh()
         title_win.refresh()
 
+        # If statements, depending on the type of question, the code will react differently.
         if "Multiple Choice" in data['type'][q][0]:
             input_win.addstr(1, 1, "Your answer: ", curses.A_BOLD)
             answer = input_win.getkey()
             input_win.addstr(1, 17, answer)
+            # If the user trolls
             while not answer.lower() in ["a","b","c"]: 
                 input_win.clear()
                 input_win.border()
@@ -246,33 +287,42 @@ def questions():
                 input_win.refresh()
             stdscr.clear()
             stdscr.refresh()
+            # If the user gets an incorrect answer
             if answer.lower() != data['answer'][q]:
                 incorrectFlash()
                 wrongCounter += 1
+            # If the user gets a correct answer
             elif answer.lower() == data['answer'][q]:
                 correctFlash()
                 if firstTry == True and wrongCounter == 0:
+                    # result storage system
                     data["result"].append("1!")
                 else: 
                     data["result"].append(f"{wrongCounter}")
+                # resets vars, next question
                 firstTry = True
                 wrongCounter = 0
                 q += 1
         elif "Short Answer" in data['type'][q][0]:
+            # var goodCounter: the amount of keywords the user got right
             goodCounter = 0
             c = stdscr.getch()
             input_win.addstr(1, 1, "Your answer: ", curses.A_BOLD)
+            # when the user types enter, user input ends, since input() cannot be used in curses.
             while c != "ENTER":
                 answer = input_win.getstr(1, 14, 175)
                 break
             stdscr.clear()
             stdscr.refresh()
+            # counting goodCounter
             for each in range(len(data['answer'][q])):
                 if data['answer'][q][each] in str(answer.lower().decode("utf-8")):
                     goodCounter += 1
+            # if user got at least one right, counted as correct
             if goodCounter >= 1:
                 correctFlash()
                 if firstTry == True and wrongCounter == 0:
+                    # goodCounter acts as a multiplier to the score for this q
                     data["result"].append(f"1!,{goodCounter}")
                 else: 
                     data["result"].append(f"{wrongCounter},{goodCounter}")
@@ -291,6 +341,7 @@ def questions():
                 break
             stdscr.clear()
             stdscr.refresh()
+            # Since UN is a special type of question, and there are only one type of questions like this, we can be less flexible for the code.
             if str(answer.lower().decode("utf-8")) in ["6","9"]:
                 correctFlash()
                 if firstTry == True and wrongCounter == 0:
@@ -305,6 +356,7 @@ def questions():
                 wrongCounter += 1
                 time.sleep(1)
     if q == len(data["questions"]):
+        # Timer ends, counts time
         end = timer()
         timeElapsed = round(end-start,2)
         stdscr.clear()
@@ -312,6 +364,7 @@ def questions():
         title_win.addstr(0,0, "Your results:", curses.A_BOLD)
         title_win.refresh()
         playsound("mp3/Other/drumroll.mp3") 
+        # Calculations of score percentage
         maxscore = 0
         for i in data["type"]:
             maxscore += float(i[1])
@@ -326,41 +379,49 @@ def questions():
                     score += round(float(data["type"][i][1]/(float(int(data["result"][i].split(",")[0])+1))) * int(data["result"][i].split(",")[0]), 2)
                 else:
                     score += round(float(data["type"][i][1]/float((int(data["result"][i])))), 2)
-
+        # Obtaining the score, and sends the user back the results.
         score = round(score,2)
         title_win.addstr(2,0, f"{score} / {maxscore} ({round((score/maxscore) * 100, 2)}%!) in {timeElapsed} seconds! 👑\n\n")
         title_win.refresh()
+        # Questions part end, curses window terminated
         q = 100
         playsound("mp3/Other/clap.mp3")
         curses.endwin()
+        # next section, leaderboards
+        highscoreSystem()
 
 def highscoreSystem():
-    print(f"{textColors.White}{textColors.Bold}\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+    print(f"{textColors.White}{textColors.Bold}")
+    clear_page()
+    # Profanity censor to censor out any "naughty" names
     name = profanity.censor(input("What is your name?\n"))
-    print(f"Hi {name}!")
+    type(f"Hi {name}!\n")
     time.sleep(1)
-    print("Your high score will be recorded, as long as the json file does not get deleted!\n\n")
+    type("Your high score will be recorded, as long as the json file does not get deleted!\n\n")
     hs.append([name,score,timeElapsed])
+    # load json config
     config.CONFIG['leaderboard'] = hs 
     config.save_config()
     time.sleep(1)
-    print("Current Leaderboards:")
+    type("Current Leaderboards:\n")
     time.sleep(0.5)
+    # Sort the rankings of the players by score then time
     def sort_key1(h):
         return h[2]
     def sort_key2(h):
         return h[1]
     hs.sort(key=sort_key1, reverse=False)
     hs.sort(key=sort_key2, reverse=True)
+    # print out the leaderboards
     for s in range(len(hs)):
         color = textColors.Yellow if s == 0 else textColors.LightGreen if s == 1 else textColors.LightBlue if s == 2 else textColors.White
         print(f"{color}{s+1}. {hs[s][0]}: {hs[s][1]} points (⏱ {hs[s][2]}s)")
         time.sleep(0.25)
     time.sleep(3)
-    print(f"{textColors.White}{textColors.Bold}\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+    print(f"{textColors.White}{textColors.Bold}{clear_page()}")
+    clear_page()
+    # end, thanks for playing!
 
 
 welcome()
-highscoreSystem()
-
 print(pct('hctp_images/thanks.html'))
