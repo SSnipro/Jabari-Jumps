@@ -57,11 +57,11 @@ data = {
     "dialogue": [
         [f'''"{textColors.LightBlue}{textColors.Bold}I'm jumping off the diving board today{textColors.ResetAll}{textColors.White}," Jabari told his dad.''', '''"Really?" said his dad.'''],
         [f'''The diving board is a bit scary, but Jabari had finished his {textColors.LightBlue}{textColors.Bold}swimming lessons and passed his swim test{textColors.ResetAll}{textColors.White}, and now he was ready to jump.''','''"I'm a great jumper," said Jabari, "so I'm not scared at all."'''],
-        [f'''Jabari watched the other kids climb the long ladder. They walked all the way out to the end of the board, as big as tiny bugs. Then they stood on the edge. They spread their arms and bent their knees. And sprang up! up! up! And then they dove down, down, down.''', '''SPLASH!''', '''"Looks easy," Jabari said.''', '''But when his dad squeezed his hand. Jabari squeezed back.'''],
+        [f'''Jabari watched the other kids climb the long ladder. They walked all the way out to the end of the board, as big as tiny bugs. Then they stood on the edge. They spread their arms and bent their knees. And sprang up! up! up! And then they dove down, down, down.''', '''SPLASH!''', f'''{textColors.LightBlue}{textColors.Bold}"Looks easy," Jabari said.''', f'''But when his dad squeezed his hand. Jabari squeezed back.{textColors.ResetAll}{textColors.White}'''],
         ['''Jabari stood at the bottom of the ladder.''', '''"You can go before me if you want," he told the kid behind him.''', '''"I need to think about what kind of special jump I'm going to do."''', '''Jabari thought and thought.'''],
         ['''Jabari started to climb. Up and up. This ladder is very tall, he thought.''', '''"Are you okay?" called his dad.''', '''"I'm just a little tired," said Jabari.''', '''"Maybe you should climb down and take a tiny rest," said his dad.''', '''A tiny rest sounded like a good idea.'''],
         [f'''When he got to the bottom, Jabari remembered something. "{textColors.LightBlue}{textColors.Bold}I forgot to do my stretches!{textColors.ResetAll}{textColors.White}" he said to his dad.''', '''"Stretching is very important," said his dad.''', '''"I think tomorrow might be a better day for jumping," Jabari said.''', '''They looked up at the diving board together.'''],
-        ['''"It's okay to feel a little scared" said his dad. "Sometimes, if I feel a little scared, I take a deep breath and tell myself I am ready. And you know what? Sometimes it stops feeling scary and feels a little like a surprise."''', '''Jabari loved surprises.'''],
+        [f'''{textColors.LightBlue}{textColors.Bold}"It's okay to feel a little scared" said his dad. "Sometimes, if I feel a little scared, I take a deep breath and tell myself I am ready. And you know what? Sometimes it stops feeling scary and feels a little like a surprise.{textColors.ResetAll}{textColors.White}"''', '''Jabari loved surprises.'''],
         ['''Jabari took a deep breath and felt it fill his body from the ends of his hair right down to the tips of his toes.''','''Jabari looked up. He began to climb.''', '''Up and up. And up and up.''', '''Until he got to the top. Jabari stood up straight.''', '''He walked all the way to the end of the board.'''],
         ['''His toes curled around the rough edge.'''],
         ['''Jabari looked out, as far as he could see. He felt like he was ready.''', '''"I love surprises," he whispered.'''],
@@ -76,7 +76,7 @@ data = {
         "Looking at the cover, who is the author of the book?", 
         "What is the setting of the story?", 
         "What will Jabari be doing?",
-        "What does Jabari think about jumping down the diving board, and why was he confident?", 
+        "What does Jabari think about jumping down the diving board initially, and why was he confident?", 
         "Who is Jabari with?",
         "Just as Jabari was about to jump off the diving board, he forgets to do something. What did Jabari forget to do?",
         "Who encourages Jabari?",
@@ -117,7 +117,7 @@ data = {
         [],
         ],
     # array answer: Correct answer list
-    "answer": ["b","c","c",["test", "swimming lesson"],"a","a","b","a",["bravery", "courage", "risk", "confiden"],["nervous", "scared","confiden","encourage", "dad"],["front","excuse","behind",""],["6","9","4"]],
+    "answer": ["b","c","c",["test", "lesson","easy"],"a","a","b","a",["bravery", "courage", "risk", "confiden"],["nervous", "scared","confiden","encourage", "dad"],["front","excuse","behind","squeeze"],["6","9","4"]],
     # array result: Stored user input result 
     "result": []
 }
