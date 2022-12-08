@@ -37,6 +37,12 @@ def type(string):
         sys.stdout.write(char)
         sys.stdout.flush()
 
+def fasttype(string, speed):
+    for char in string:
+        time.sleep(speed)
+        sys.stdout.write(char)
+        sys.stdout.flush()
+
 # func clear_page: used to clear terminal page
 def clear_page():
     print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
@@ -90,14 +96,14 @@ data = {
         ["Multiple Choice",100],
         ["Multiple Choice",100],
         ["Multiple Choice,",200],
-        ["Short Answer",200],
+        ["Short Answer",400],
+        ["Short Answer",500],
         ["Short Answer",300],
-        ["Short Answer",200],
         ["UN", 1000]
         ],
     # array answers: If question type multiple choice, stored format [a,b,c], if empty -> not multiple choice
     "answers": [
-        ["Jabari","Gaia Cornwell","David Shannon"],
+        ["Jabari","Gaia Cornwall","David Shannon"],
         ["A park", "Jabari's home", "A swimming pool"],
         ["Playing with his sister", "Swimming with his dad", "Jumping off a diving board"],
         [],
@@ -111,7 +117,7 @@ data = {
         [],
         ],
     # array answer: Correct answer list
-    "answer": ["b","c","c",["test", "swimming lesson"],"a","a","b","a",["bravery", "courage", "risk", "confiden"],["nervous", "scared","confiden","encourage", "dad"],["front","excuse","behind",""],["6","9"]],
+    "answer": ["b","c","c",["test", "swimming lesson"],"a","a","b","a",["bravery", "courage", "risk", "confiden"],["nervous", "scared","confiden","encourage", "dad"],["front","excuse","behind",""],["6","9","4"]],
     # array result: Stored user input result 
     "result": []
 }
@@ -119,15 +125,9 @@ data = {
 
 def welcome():
     # Welcome to the game ASCII art
-    print(f"""{textColors.Magenta}\n\n██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗    ████████╗ ██████╗     ████████╗██╗  ██╗███████╗     ██████╗  █████╗ ███╗   ███╗███████╗
-██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝    ╚══██╔══╝██╔═══██╗    ╚══██╔══╝██║  ██║██╔════╝    ██╔════╝ ██╔══██╗████╗ ████║██╔════╝
-██║ █╗ ██║█████╗  ██║     ██║     ██║   ██║██╔████╔██║█████╗         ██║   ██║   ██║       ██║   ███████║█████╗      ██║  ███╗███████║██╔████╔██║█████╗  
-██║███╗██║██╔══╝  ██║     ██║     ██║   ██║██║╚██╔╝██║██╔══╝         ██║   ██║   ██║       ██║   ██╔══██║██╔══╝      ██║   ██║██╔══██║██║╚██╔╝██║██╔══╝  
-╚███╔███╔╝███████╗███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗       ██║   ╚██████╔╝       ██║   ██║  ██║███████╗    ╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗
- ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝       ╚═╝    ╚═════╝        ╚═╝   ╚═╝  ╚═╝╚══════╝     ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝
-       """)
+    fasttype(pct("hctp_images/welcome.html"),0.000005)
     # Conditional input value skip
-    skip = input(f"{textColors.Bold}            Press S to skip walkthrough | Press anything else to start the story walkthrough{textColors.ResetAll}     ")
+    skip = input(f"{textColors.Bold}                                                       Press S to skip walkthrough | Press anything else to start the story walkthrough{textColors.ResetAll}     ")
     if skip.lower() == "s":
         questions()
     else:
@@ -148,9 +148,6 @@ def walkthrough():
                 # Image corresponding to each page (if there is an image, if error -> pass)
                 print("\n\n")
                 print(pct(f"hctp_images/walkthrough/{lines+1}.html"))
-                for _ in range(2):
-                    time.sleep(0.5)
-                    print("\n")
                 time.sleep(5)
             except:
                 pass
@@ -158,22 +155,12 @@ def walkthrough():
     type(f"{textColors.White}\n\n\n\n\nHere is a brief walkthrough of Jabari Jumps! (Tip: Pay attention to the {textColors.LightBlue}{textColors.Bold}BLUE{textColors.ResetAll}{textColors.White} text!)")
     time.sleep(1)
     # Cover page
-    print(pct("hctp_images/walkthrough/cover.html"))
-    # Used to create a scroll-down effect, reduces cover page ASCII image lag
-    for _ in range(10):
-        time.sleep(0.1)
-        print("\n")
+    fasttype(pct("hctp_images/walkthrough/cover.html"),0.000005)
     time.sleep(5)
     dialogue()
     clear_page()
     # After walkthrough ends, question part commences
-    print(""" ██████╗ ██╗   ██╗███████╗███████╗████████╗██╗ ██████╗ ███╗   ██╗███████╗
-██╔═══██╗██║   ██║██╔════╝██╔════╝╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝
-██║   ██║██║   ██║█████╗  ███████╗   ██║   ██║██║   ██║██╔██╗ ██║███████╗
-██║▄▄ ██║██║   ██║██╔══╝  ╚════██║   ██║   ██║██║   ██║██║╚██╗██║╚════██║
-╚██████╔╝╚██████╔╝███████╗███████║   ██║   ██║╚██████╔╝██║ ╚████║███████║
- ╚══▀▀═╝  ╚═════╝ ╚══════╝╚══════╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
-                       """)
+    print(pct("hctp_images/q.html"))
     time.sleep(5)
     questions()
     
@@ -184,7 +171,7 @@ def questions():
     start = timer()
     clear_page()
     # Cover page w/ author name, again
-    print(pct("hctp_images/q1.html"))
+    fasttype(pct("hctp_images/q1.html"),0.00001)
     time.sleep(5)
     # global vars, they will be used for tracking in this section
     global q
@@ -209,7 +196,7 @@ def questions():
     # while loop until questions end
     while q < len(data["questions"]):
         # win input_win: Window that will display user input (responses), resizes conditionally using ternary operation
-        input_win = curses.newwin(3 if "Multiple Choice" in data['type'][q][0] or "UN" in data['type'][q][0] else 5, 18 if "Multiple Choice" in data['type'][q][0] or "UN" in data['type'][q][0] else 60, 20 if "UN" in data['type'][q][0] else 10, 3)
+        input_win = curses.newwin(3 if "Multiple Choice" in data['type'][q][0] or "UN" in data['type'][q][0] else 5, 18 if "Multiple Choice" in data['type'][q][0] or "UN" in data['type'][q][0] else 180, 20 if "UN" in data['type'][q][0] else 10, 3)
         # func incorrectFlash(): text-based flash if user gets an incorrect answer 
         def incorrectFlash():
             global firstTry
@@ -263,7 +250,7 @@ def questions():
         if "Multiple Choice" in data['type'][q][0]:
             title_win.addstr(3, 0, f"A. {data['answers'][q][0]}\nB. {data['answers'][q][1]}\nC. {data['answers'][q][2]}")
         elif "Short Answer" in data['type'][q][0]:
-            title_win.addstr(3, 0, f"\nPress any key to start answering", curses.A_BOLD)
+            pass
         elif "UN" in data['type'][q][0]:    
             title_win.addstr(3, 0, f"GOAL 1: No Poverty\nGOAL 3: Good Health and Well-being\nGOAL 5: Gender Equality\nGOAL 7: Affordable and Clean Energy\nGOAL 9: Industry, Innovation and Infrastructure\nGOAL 11: Sustainable Cities and Communities\nGOAL 13: Climate Action\nGOAL 15: Life on Land\nGOAL 17: Partnerships to achieve the Goal")
             array = ["GOAL 2: Zero Hunger","GOAL 4: Quality Education","GOAL 6: Clean Water and Sanitation","GOAL 8: Decent Work and Economic Growth","GOAL 10: Reduced Inequality","GOAL 12: Responsible Consumption and Production","GOAL 14: Life Below Water","GOAL 16: Peace and Justice Strong Institutions"]
@@ -306,12 +293,10 @@ def questions():
         elif "Short Answer" in data['type'][q][0]:
             # var goodCounter: the amount of keywords the user got right
             goodCounter = 0
-            c = stdscr.getch()
             input_win.addstr(1, 1, "Your answer: ", curses.A_BOLD)
+            input_win.refresh()
             # when the user types enter, user input ends, since input() cannot be used in curses.
-            while c != "ENTER":
-                answer = input_win.getstr(1, 14, 175)
-                break
+            answer = input_win.getstr(1, 14, 175)
             stdscr.clear()
             stdscr.refresh()
             # counting goodCounter
@@ -334,15 +319,13 @@ def questions():
                 wrongCounter += 1
                 time.sleep(1)
         elif "UN" in data['type'][q][0]:
-            c = stdscr.getch()
             input_win.addstr(1, 1, "Your answer: ", curses.A_BOLD)
-            while c != "ENTER":
-                answer = input_win.getstr(1, 14, 175)
-                break
+            input_win.refresh()
+            answer = input_win.getstr(1, 14, 175)
             stdscr.clear()
             stdscr.refresh()
             # Since UN is a special type of question, and there are only one type of questions like this, we can be less flexible for the code.
-            if str(answer.lower().decode("utf-8")) in ["6","9"]:
+            if str(answer.lower().decode("utf-8")) in ["6","9","4"]:
                 correctFlash()
                 if firstTry == True and wrongCounter == 0:
                     data["result"].append(f"1!")

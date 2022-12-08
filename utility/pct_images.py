@@ -1,3 +1,3 @@
-from utility.hctp import pct
+from hctp import pct
 
-print(pct('UCC_Y9_1/Jabari Jumps/hct_images/ucc.html'))
+print(pct('hctp_images/sample/tp.html'))
