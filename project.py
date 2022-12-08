@@ -19,6 +19,7 @@ from playsound import playsound
 import utility.config as config
 from better_profanity import profanity
 import sys
+import rich 
 
 # var hs: json file where all the leaderboard user data is stored.
 # var score: score of the user (refreshes after each attempt)
@@ -91,7 +92,7 @@ data = {
         ["Multiple Choice image_question_1.html",100], 
         ["Multiple Choice",100], 
         ["Multiple Choice",100],
-        ["Short Answer",200],
+        ["Short Answer",300],
         ["Multiple Choice",100],
         ["Multiple Choice",100],
         ["Multiple Choice",100],
@@ -108,7 +109,7 @@ data = {
         ["Playing with his sister", "Swimming with his dad", "Jumping off a diving board"],
         [],
         ["His dad and his sister","His dad","His dad and his mother"],
-        ["He forgets to strech","He forgets to hug his sister","He forgets how to jump"],
+        ["He forgets to stretch","He forgets to hug his sister","He forgets how to jump"],
         ["His mother", "His dad", "His sister"],
         ['''"Sometimes, if I feel a little scared, I take a deep breath and tell myself I am ready. And you know what? Sometimes it stops feeling scary and feels a little like a surprise."''','''"Stretching is very important,"''','''"Are you okay?"'''],
         [],
@@ -117,7 +118,7 @@ data = {
         [],
         ],
     # array answer: Correct answer list
-    "answer": ["b","c","c",["test", "lesson","easy"],"a","a","b","a",["bravery", "courage", "risk", "confiden"],["nervous", "scared","confiden","encourage", "dad"],["front","excuse","behind","squeeze"],["6","9","4"]],
+    "answer": ["b","c","c",["test", "lesson","easy"],"a","a","b","a",["bravery", "courage", "risk", "confiden"],["nervous", "scared","confiden","encourage", "dad"],["front","excuse","behind","squeeze","rest","think"],["6","9","4"]],
     # array result: Stored user input result 
     "result": []
 }
@@ -155,6 +156,7 @@ def walkthrough():
     type(f"{textColors.White}\n\n\n\n\nHere is a brief walkthrough of Jabari Jumps! (Tip: Pay attention to the {textColors.LightBlue}{textColors.Bold}BLUE{textColors.ResetAll}{textColors.White} text!)")
     time.sleep(1)
     # Cover page
+    print("\n")
     fasttype(pct("hctp_images/walkthrough/cover.html"),0.000005)
     time.sleep(5)
     dialogue()
@@ -408,3 +410,9 @@ def highscoreSystem():
 
 welcome()
 print(pct('hctp_images/thanks.html'))
+rich.print("""[link=https://docs.google.com/forms/d/e/1FAIpQLSf05T93PRvFXamRgehGHw15VKl8rcHIGyI68dcbOlvHci26ew/viewform?usp=sf_link]███████╗███████╗███████╗██████╗ ██████╗  █████╗  ██████╗██╗  ██╗    ███████╗ ██████╗ ██████╗ ███╗   ███╗
+██╔════╝██╔════╝██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝██║ ██╔╝    ██╔════╝██╔═══██╗██╔══██╗████╗ ████║
+█████╗  █████╗  █████╗  ██║  ██║██████╔╝███████║██║     █████╔╝     █████╗  ██║   ██║██████╔╝██╔████╔██║
+██╔══╝  ██╔══╝  ██╔══╝  ██║  ██║██╔══██╗██╔══██║██║     ██╔═██╗     ██╔══╝  ██║   ██║██╔══██╗██║╚██╔╝██║
+██║     ███████╗███████╗██████╔╝██████╔╝██║  ██║╚██████╗██║  ██╗    ██║     ╚██████╔╝██║  ██║██║ ╚═╝ ██║
+╚═╝     ╚══════╝╚══════╝╚═════╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝    ╚═╝      ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝[/link]!""")
