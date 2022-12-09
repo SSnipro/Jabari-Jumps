@@ -410,9 +410,4 @@ def highscoreSystem():
 
 welcome()
 print(pct('hctp_images/thanks.html'))
-rich.print("""[link=https://docs.google.com/forms/d/e/1FAIpQLSf05T93PRvFXamRgehGHw15VKl8rcHIGyI68dcbOlvHci26ew/viewform?usp=sf_link]███████╗███████╗███████╗██████╗ ██████╗  █████╗  ██████╗██╗  ██╗    ███████╗ ██████╗ ██████╗ ███╗   ███╗
-██╔════╝██╔════╝██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝██║ ██╔╝    ██╔════╝██╔═══██╗██╔══██╗████╗ ████║
-█████╗  █████╗  █████╗  ██║  ██║██████╔╝███████║██║     █████╔╝     █████╗  ██║   ██║██████╔╝██╔████╔██║
-██╔══╝  ██╔══╝  ██╔══╝  ██║  ██║██╔══██╗██╔══██║██║     ██╔═██╗     ██╔══╝  ██║   ██║██╔══██╗██║╚██╔╝██║
-██║     ███████╗███████╗██████╔╝██████╔╝██║  ██║╚██████╗██║  ██╗    ██║     ╚██████╔╝██║  ██║██║ ╚═╝ ██║
-╚═╝     ╚══════╝╚══════╝╚═════╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝    ╚═╝      ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝[/link]!""")
+rich.print("""[link=https://docs.google.com/forms/d/e/1FAIpQLSf05T93PRvFXamRgehGHw15VKl8rcHIGyI68dcbOlvHci26ew/viewform?usp=sf_link]Feedback form[/link]!""")

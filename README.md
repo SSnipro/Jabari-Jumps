@@ -14,4 +14,6 @@ This repository is dedicated to create a text-based game to help the UCC student
 
 ### How to run the game
 
-#### 1. Install packages using pip
+#### **1. Install packages using pip
+
+note to mr. jugoon, if by now I have not updated README.md, please email me so I can show you my game in person, since it requires alot of pip installation. Thank you, Noah
